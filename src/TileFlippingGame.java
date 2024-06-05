@@ -225,11 +225,12 @@ public class TileFlippingGame extends JFrame {
 
       // Convert totalTime from milliseconds to seconds
       double totalTimeSeconds = totalTime / 1000.0;
-
+      int totalTiles = rows * cols;
+      double howManyTimesEachGetClicked = (double) flipCount / (totalTiles);
       int replay = JOptionPane.showConfirmDialog(this,
           String.format(
-              "You have canceled all the tiles and thus finish this round!\nTime spent: %.2f seconds\nTotal flips: %d\nDo you want to play again?",
-              totalTimeSeconds, flipCount),
+              "You have canceled all the tiles and thus finish this round!\nTime spent: %.3f seconds\nTotal flips: %d\nTotal tiles: %d\nIn average you clicked each tile %.2f times\n\nDo you want to play again?",
+              totalTimeSeconds, flipCount, totalTiles, howManyTimesEachGetClicked),
           "Game Over",
           JOptionPane.YES_NO_OPTION);
 
@@ -282,12 +283,18 @@ public class TileFlippingGame extends JFrame {
             throw new NumberFormatException("Values must be positive integers.");
           }
 
+          if (differentTiles * identical >= 2000){
+            throw new Exception("number too large");
+          }
           JOptionPane.showMessageDialog(this, "Good luck and have fun!", "Enjoy the Game",
               JOptionPane.INFORMATION_MESSAGE);
           initializeGame(differentTiles, identical);
           break;
         } catch (NumberFormatException e) {
-          JOptionPane.showMessageDialog(null, "Please enter valid positive integer values for all variables.",
+          JOptionPane.showMessageDialog(null, "Please enter valid POSITIVE INTEGER values for all variables.",
+              "Invalid Input", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e){
+          JOptionPane.showMessageDialog(null, "You definitely cannot handle this much tiles.",
               "Invalid Input", JOptionPane.ERROR_MESSAGE);
         }
       } else {

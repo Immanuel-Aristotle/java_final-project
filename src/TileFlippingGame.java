@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class TileFlippingGame extends JFrame {
   private int rows;
@@ -117,7 +118,8 @@ public class TileFlippingGame extends JFrame {
       this.symbol = symbol;
       this.isFlipped = false;
       setText("");
-      setFont(new Font("Arial", Font.BOLD, (int) size / 16)); // Set the default font size and style
+      int fontsize = (int) Math.round(size / ( 2 * Math.sqrt(rows * cols)));
+      setFont(new Font("Arial", Font.BOLD, fontsize)); // Set the default font size and style
     }
 
     public void flip() {
@@ -279,6 +281,8 @@ public class TileFlippingGame extends JFrame {
   }
 
   public static void main(String[] args) {
+    // show all text in english
+    Locale.setDefault(Locale.ENGLISH);
     gameStart();
   }
 }

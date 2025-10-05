@@ -1,3 +1,4 @@
+
 /*
  * @author  Idwel
  * @purpose Grade11 Semester2 end java GUI program
@@ -15,6 +16,7 @@ public class TileFlippingGameOriginal extends JFrame {
   private int rows;
   private int cols;
   private int identicalTilesToCancel;
+  private int differentTiles;
   private TileButton[][] tiles;
   private List<TileButton> selectedTiles;
   private int score;
@@ -31,6 +33,7 @@ public class TileFlippingGameOriginal extends JFrame {
 
   public void initializeGame(int differentTiles, int identicalTilesToCancel) {
     this.identicalTilesToCancel = identicalTilesToCancel;
+    this.differentTiles = differentTiles;
     int totalTiles = differentTiles * identicalTilesToCancel;
     calculateRowsAndCols(totalTiles);
 
@@ -228,8 +231,11 @@ public class TileFlippingGameOriginal extends JFrame {
       double howManyTimesEachGetClicked = (double) flipCount / (totalTiles);
       int replay = JOptionPane.showConfirmDialog(this,
           String.format(
-              "You have canceled all the tiles and thus finish this round!\nTime spent: %.3f seconds\nTotal flips: %d\nTotal tiles: %d\nIn average you clicked each tile %.2f times\n\nDo you want to play again?",
-              totalTimeSeconds, flipCount, totalTiles, howManyTimesEachGetClicked),
+              "You have canceled all the tiles and thus finish this round!\n\n" +
+                  "Time spent: %.3f seconds\n" + "Size of every single set: %d\n"
+                  + "Set number: %d\n" + "Total flips: %d\n" + "In average you clicked each tile %.2f times\n\n"
+                  + "Do you want to play again?",
+              totalTimeSeconds, identicalTilesToCancel, differentTiles, flipCount, howManyTimesEachGetClicked),
           "Game Over",
           JOptionPane.YES_NO_OPTION);
 
@@ -282,7 +288,7 @@ public class TileFlippingGameOriginal extends JFrame {
             throw new NumberFormatException("Values must be positive integers.");
           }
 
-          if (differentTiles * identical >= 2000){
+          if (differentTiles * identical >= 2000) {
             throw new Exception("number too large");
           }
           JOptionPane.showMessageDialog(this, "Good luck and have fun!", "Enjoy the Game",
@@ -292,7 +298,7 @@ public class TileFlippingGameOriginal extends JFrame {
         } catch (NumberFormatException e) {
           JOptionPane.showMessageDialog(null, "Please enter valid POSITIVE INTEGER values for all variables.",
               "Invalid Input", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e){
+        } catch (Exception e) {
           JOptionPane.showMessageDialog(null, "You definitely cannot handle this much tiles.",
               "Invalid Input", JOptionPane.ERROR_MESSAGE);
         }
@@ -309,13 +315,14 @@ public class TileFlippingGameOriginal extends JFrame {
      */
     String[] introductions = {
         "Welcome to the Tile Flipping Game!\n\n"
-            + "Instructions:\n"
+            + "In the game you will see a bunch of tiles, each has a symbol on it.\n All tiles are originally unflipped (you cannot see the symbol on them).\nYou can click the body of the tile to flip it so that you can see its symbol.\nYou need to flip ALL the tiles with the same symbol to match and cancel them.\nWhen the number of current flipped but not cancel tiles reach the size of\n a tile set and they're not match, they will be flipped back.\n\nCancel all tiles to win the game.",
+        "Instructions:\n"
             + "1. Click on a tile to flip it.\n"
             + "2. Match a number of identical tiles in a row to cancel them out.\n"
             + "3. If the tiles do not match, they will be flipped back.\n"
             + "4. Cancel all tiles to win the game.\n\n",
         "This game is quite different from similar games\n"
-            + "where you need filp only two tiles with the same pattern to cancel them. \n\n"
+            + "where you need flip only two tiles with the same pattern to cancel them. \n\n"
             + "You can now assign the number of identical tiles required to cancel them out, \n"
             + "and the according number of identical tiles will be generated automatically.",
         "You will then be asked for the number of total groups of tiles\nand the number of tiles in each group."

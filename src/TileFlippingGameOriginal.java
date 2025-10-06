@@ -3,14 +3,14 @@
  * @author  Idwel
  * @purpose Grade11 Semester2 end java GUI program
  */
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ArrayList;
+import javax.swing.*;
 
 public class TileFlippingGameOriginal extends JFrame {
   private int rows;
@@ -18,7 +18,7 @@ public class TileFlippingGameOriginal extends JFrame {
   private int identicalTilesToCancel;
   private int differentTiles;
   private TileButton[][] tiles;
-  private List<TileButton> selectedTiles;
+  private final List<TileButton> selectedTiles;
   private int score;
   /* to show the time and flipCount at the end of a game */
   private Timer flipBackTimer;
@@ -119,14 +119,10 @@ public class TileFlippingGameOriginal extends JFrame {
    * the symbol is placed at the center of the tile body
    */
   private class TileButton extends JButton {
-    private int row;
-    private int col;
     private boolean isFlipped;
-    private String symbol;
+    private final String symbol;
 
     public TileButton(int row, int col, String symbol) {
-      this.row = row;
-      this.col = col;
       this.symbol = symbol;
       this.isFlipped = false;
       setText("");
@@ -156,10 +152,6 @@ public class TileFlippingGameOriginal extends JFrame {
     public String getSymbol() {
       return symbol;
     }
-
-    public boolean isFlipped() {
-      return isFlipped;
-    }
   }
 
   /*
@@ -179,12 +171,9 @@ public class TileFlippingGameOriginal extends JFrame {
            * actions when the number of flipped tiles equals to the size of identical
            * tiles set
            */
-          flipBackTimer = new Timer(500, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-              checkForMatch();
-              flipBackTimer.stop();
-            }
+          flipBackTimer = new Timer(500, (ActionEvent e1) -> {
+            checkForMatch();
+            flipBackTimer.stop();
           });
           flipBackTimer.setRepeats(false);
           flipBackTimer.start();
@@ -230,11 +219,16 @@ public class TileFlippingGameOriginal extends JFrame {
       int totalTiles = rows * cols;
       double howManyTimesEachGetClicked = (double) flipCount / (totalTiles);
       int replay = JOptionPane.showConfirmDialog(this,
-          String.format(
-              "You have canceled all the tiles and thus finish this round!\n\n" +
-                  "Time spent: %.3f seconds\n" + "Size of every single set: %d\n"
-                  + "Set number: %d\n" + "Total flips: %d\n" + "In average you clicked each tile %.2f times\n\n"
-                  + "Do you want to play again?",
+          String.format("""
+              You have canceled all the tiles and thus finish this round!
+
+              Time spent: %.3f seconds
+              Size of every single set: %d
+              Set number: %d
+              Total flips: %d
+              In average you clicked each tile %.2f times
+
+              Do you want to play again?""",
               totalTimeSeconds, identicalTilesToCancel, differentTiles, flipCount, howManyTimesEachGetClicked),
           "Game Over",
           JOptionPane.YES_NO_OPTION);
@@ -314,23 +308,39 @@ public class TileFlippingGameOriginal extends JFrame {
      * showing introductions before the game
      */
     String[] introductions = {
-        "Welcome to the Tile Flipping Game!\n\n"
-            + "In the game you will see a bunch of tiles, each has a symbol on it.\n All tiles are originally unflipped (you cannot see the symbol on them).\nYou can click the body of the tile to flip it so that you can see its symbol.\nYou need to flip ALL the tiles with the same symbol to match and cancel them.\nWhen the number of current flipped but not cancel tiles reach the size of\n a tile set and they're not match, they will be flipped back.\n\nCancel all tiles to win the game.",
-        "Instructions:\n"
-            + "1. Click on a tile to flip it.\n"
-            + "2. Match a number of identical tiles in a row to cancel them out.\n"
-            + "3. If the tiles do not match, they will be flipped back.\n"
-            + "4. Cancel all tiles to win the game.\n\n",
-        "This game is quite different from similar games\n"
-            + "where you need flip only two tiles with the same pattern to cancel them. \n\n"
-            + "You can now assign the number of identical tiles required to cancel them out, \n"
-            + "and the according number of identical tiles will be generated automatically.",
-        "You will then be asked for the number of total groups of tiles\nand the number of tiles in each group."
-            + "\n\nPlease fill in POSITIVE NUMBERS only."
-            + "\n\nYou will receive warnings if you do not do so."
-    };
-    for (int i = 0; i < introductions.length; i++) {
-      JOptionPane.showMessageDialog(this, introductions[i], "Introductions", JOptionPane.INFORMATION_MESSAGE);
+        """
+            Welcome to the Tile Flipping Game!
+
+            In the game you will see a bunch of tiles, each has a symbol on it.
+             All tiles are originally unflipped (you cannot see the symbol on them).
+            You can click the body of the tile to flip it so that you can see its symbol.
+            You need to flip ALL the tiles with the same symbol to match and cancel them.
+            When the number of current flipped but not cancel tiles reach the size of
+             a tile set and they're not match, they will be flipped back.
+
+            Cancel all tiles to win the game.""",
+        """
+            Instructions:
+            1. Click on a tile to flip it.
+            2. Match a number of identical tiles in a row to cancel them out.
+            3. If the tiles do not match, they will be flipped back.
+            4. Cancel all tiles to win the game.
+
+            """, """
+            This game is quite different from similar games
+            where you need flip only two tiles with the same pattern to cancel them.
+
+            You can now assign the number of identical tiles required to cancel them out,
+            and the according number of identical tiles will be generated automatically.""",
+        """
+            You will then be asked for the number of total groups of tiles
+            and the number of tiles in each group.
+
+            Please fill in POSITIVE NUMBERS only.
+
+            You will receive warnings if you do not do so.""" };
+    for (String introduction : introductions) {
+      JOptionPane.showMessageDialog(this, introduction, "Introductions", JOptionPane.INFORMATION_MESSAGE);
     }
   }
 
@@ -357,7 +367,6 @@ class PlayerData {
     try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(DATA_FILE, true)))) {
       out.println(score);
     } catch (IOException e) {
-      e.printStackTrace();
     }
   }
 
@@ -366,10 +375,9 @@ class PlayerData {
     try (BufferedReader in = new BufferedReader(new FileReader(DATA_FILE))) {
       String line;
       while ((line = in.readLine()) != null) {
-        scores.add(Integer.parseInt(line));
+        scores.add(Integer.valueOf(line));
       }
     } catch (IOException e) {
-      e.printStackTrace();
     }
     return scores;
   }

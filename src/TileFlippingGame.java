@@ -3,14 +3,14 @@
  * @author  Idwel
  * @purpose Grade11 Semester2 end java GUI program
  */
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Locale;
+import javax.swing.*;
 
 public class TileFlippingGame extends JFrame {
   private int rows;
@@ -18,7 +18,7 @@ public class TileFlippingGame extends JFrame {
   final private int size = 800;
   private int identicalTilesToCancel;
   private TileButton[][] tiles;
-  private List<TileButton> selectedTiles;
+  private final List<TileButton> selectedTiles;
 
   public TileFlippingGame() {
     this.selectedTiles = new ArrayList<>();
@@ -112,7 +112,7 @@ public class TileFlippingGame extends JFrame {
    */
   private class TileButton extends JButton {
     private boolean isFlipped;
-    private String symbol;
+    private final String symbol;
 
     public TileButton(String symbol) {
       this.symbol = symbol;
@@ -156,10 +156,8 @@ public class TileFlippingGame extends JFrame {
            * when the number of total clicked tiles equal to the identicle tile set, check
            * for its matching
            */
-          Timer timer = new Timer(500, new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+          Timer timer = new Timer(500, (ActionEvent evt) -> {
               checkForMatch();
-            }
           });
           timer.setRepeats(false);
           timer.start();
@@ -252,23 +250,32 @@ public class TileFlippingGame extends JFrame {
      * showing introductions before the game
      */
     String[] introductions = {
-        "Welcome to the Tile Flipping Game!\n\n"
-            + "Instructions:\n"
-            + "1. Click on a tile to flip it.\n"
-            + "2. Match a number of identical tiles in a row to cancel them out.\n"
-            + "3. If the tiles do not match, they will be flipped back.\n"
-            + "4. Cancel all tiles to win the game.\n\n",
-        "This game is quite different from similar games\n"
-            + "where you need flip only two tiles with the same pattern to cancel them. \n\n"
-            + "You can now assign the number of identical tiles required to cancel them out, \n"
-            + "and the according number of identical tiles will be generated automatically.",
-        "You will then be asked for the number of total groups of tiles\nand the number of tiles in each group."
-            + "\n\nPlease fill in POSITIVE NUMBERS only."
-            + "\n\nYou will receive warnings if you do not do so."
-    };
-    for (int i = 0; i < introductions.length; i++) {
-      JOptionPane.showMessageDialog(this, introductions[i], "Introductions", JOptionPane.INFORMATION_MESSAGE);
-    }
+        """
+        Welcome to the Tile Flipping Game!
+        
+        Instructions:
+        1. Click on a tile to flip it.
+        2. Match a number of identical tiles in a row to cancel them out.
+        3. If the tiles do not match, they will be flipped back.
+        4. Cancel all tiles to win the game.
+        
+        """, 
+        """
+        This game is quite different from similar games
+        where you need flip only two tiles with the same pattern to cancel them. 
+        
+        You can now assign the number of identical tiles required to cancel them out,
+        and the according number of identical tiles will be generated automatically.""", 
+        """
+        You will then be asked for the number of total groups of tiles
+        and the number of tiles in each group.
+
+        Please fill in POSITIVE NUMBERS only.
+
+        You will receive warnings if you do not do so."""};
+      for (String introduction : introductions) {
+          JOptionPane.showMessageDialog(this, introduction, "Introductions", JOptionPane.INFORMATION_MESSAGE);
+      }
   }
 
   /*

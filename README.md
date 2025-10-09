@@ -1,7 +1,13 @@
 ---
 name: Final Project
 url: https://bnds.managebac.cn/student/classes/11261407/core_tasks/24551651
-description: |
+startdate: "2024-05-11T10:04:58"
+duedate: "2024-06-07T02:10"
+---
+# Java Final Project of G11 Semester 2
+
+## description
+
   Your own idea in Java
 
   A project that must include:
@@ -27,11 +33,8 @@ description: |
     Show the code featuring the important parts (NOT EVERY LINE), parts you learned something new, or some part you struggled with
 
   Upload the Java files related to your project to MB.
-startdate: "2024.05.11 10:04:58"
-duedate: "2024.06.07 2:10"
----
 
-# video-making
+## video-making
 
 OK and this is my Grade 11 S2 end java GUI project. In this video I will do a review of this project. Firstly do a simple demonstration of the program. Secondly I will mention parts of the code where I learned something new. And Finally I will explain the problems I've struggled with when making this program.
 

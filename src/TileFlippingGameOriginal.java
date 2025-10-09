@@ -24,6 +24,7 @@ public class TileFlippingGameOriginal extends JFrame {
   private Timer flipBackTimer;
   private long startTime;
   private int flipCount;
+  private int differentTiles2;
 
   public TileFlippingGameOriginal() {
     this.selectedTiles = new ArrayList<>();
@@ -275,19 +276,19 @@ public class TileFlippingGameOriginal extends JFrame {
       if (result == JOptionPane.OK_OPTION) {
         // exception handling
         try {
-          int differentTiles = Integer.parseInt(differentTilesField.getText());
+          differentTiles2 = Integer.parseInt(differentTilesField.getText());
           int identical = Integer.parseInt(identicalField.getText());
 
-          if (differentTiles <= 0 || identical <= 0) {
+          if (differentTiles2 <= 0 || identical <= 0) {
             throw new NumberFormatException("Values must be positive integers.");
           }
 
-          if (differentTiles * identical >= 2000) {
+          if (differentTiles2 * identical >= 2000) {
             throw new Exception("number too large");
           }
           JOptionPane.showMessageDialog(this, "Good luck and have fun!", "Enjoy the Game",
               JOptionPane.INFORMATION_MESSAGE);
-          initializeGame(differentTiles, identical);
+          initializeGame(differentTiles2, identical);
           break;
         } catch (NumberFormatException e) {
           JOptionPane.showMessageDialog(null, "Please enter valid POSITIVE INTEGER values for all variables.",
